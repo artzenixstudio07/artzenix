@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artzenix | Sahil Meshram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #fcfcfc;
+            --text-dark: #111111;
+            --text-muted: #666666;
+            --border-color: #e5e5e5;
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        /* Background Grid Pattern */
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            background: rgba(255,255,255,0.6);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .menu-icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* --- INTRO & SLIDE REVEAL ENGINE --- */
+        .reveal-item, .thought-reveal, .thought-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .motion-ready .reveal-item:not(.active) {
+            opacity: 0;
+            transform: translateY(30px);
+            will-change: transform, opacity;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            isolation: isolate;
+            padding: 80px 0;
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-atmosphere {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: calc(50% - 50vw);
+            width: 100vw;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .hero-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            will-change: transform;
+            animation: blobFloat 26s ease-in-out infinite alternate;
+        }
+
+        .hero-blob-pink {
+            top: 3%;
+            left: calc(50% - 420px);
+            background: linear-gradient(135deg, #f5abc9, #f8d6e4);
+        }
+
+        .hero-blob-yellow {
+            top: 8%;
+            right: calc(50% - 420px);
+            background: linear-gradient(135deg, #f4df92, #fff0bf);
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        .hero-blob-blue {
+            bottom: 0;
+            right: calc(50% - 340px);
+            background: linear-gradient(135deg, #afd8f1, #d8edf7);
+            animation-duration: 22s;
+            animation-delay: -7s;
+        }
+
+        .hero-float-card {
+            position: absolute;
+            width: var(--card-size);
+            height: var(--card-size);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.45);
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            transform: rotate(var(--card-angle));
+            will-change: transform;
+            animation: cardFloat var(--float-duration) ease-in-out infinite alternate;
+        }
+
+        .hero-float-card:nth-child(4) {
+            --card-size: 116px;
+            --card-angle: -20deg;
+            --float-duration: 12s;
+            top: 13%;
+            left: calc(50% - 340px);
+        }
+
+        .hero-float-card:nth-child(5) {
+            --card-size: 84px;
+            --card-angle: 25deg;
+            --float-duration: 15s;
+            top: 18%;
+            right: calc(50% - 300px);
+            animation-delay: -5s;
+        }
+
+        .hero-float-card:nth-child(6) {
+            --card-size: 150px;
+            --card-angle: 14deg;
+            --float-duration: 14s;
+            bottom: 19%;
+            left: calc(50% - 390px);
+            animation-delay: -8s;
+        }
+
+        .hero-float-card:nth-child(7) {
+            --card-size: 104px;
+            --card-angle: -12deg;
+            --float-duration: 11s;
+            bottom: 24%;
+            right: calc(50% - 355px);
+            animation-delay: -3s;
+        }
+
+        .hero-float-card:nth-child(8) {
+            --card-size: 64px;
+            --card-angle: 8deg;
+            --float-duration: 13s;
+            bottom: 5%;
+            right: calc(50% - 180px);
+            animation-delay: -6s;
+        }
+
+        @keyframes blobFloat {
+            from { transform: translate3d(-20px, -15px, 0) scale(1); }
+            to { transform: translate3d(30px, 35px, 0) scale(1.08); }
+        }
+
+        @keyframes cardFloat {
+            from { transform: translateY(0) rotate(var(--card-angle)); }
+            to { transform: translateY(-18px) rotate(calc(var(--card-angle) + 5deg)); }
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            background: linear-gradient(180deg, #111, #3a4250);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: var(--font-serif);
+            font-size: 44px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 420px;
+            margin: 0 auto 40px auto;
+            font-weight: 300;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 60px;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            will-change: transform;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .btn:hover, .btn:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-dark {
+            background-color: var(--text-dark);
+            color: #ffffff;
+            border: 1px solid var(--text-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        .scroll-indicator {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scroll-indicator i {
+            display: inline-block;
+            animation: arrowBounce 2s infinite ease-in-out;
+            will-change: transform;
+            font-size: 14px;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Sections Styling */
+        .section {
+            padding: 60px 0;
+            scroll-margin-top: 100px;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        /* Portfolio / Selected Works */
+        .portfolio-item {
+            margin-bottom: 48px;
+        }
+
+        .portfolio-img-container {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .portfolio-img-container:hover .portfolio-img {
+            transform: scale(1.03);
+            will-change: transform;
+        }
+
+        .portfolio-info {
+            text-align: center;
+        }
+
+        .portfolio-name {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .portfolio-meta {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .view-all-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        /* Ambedkar Thoughts Custom Styles */
+        .thoughts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+            margin-top: 32px;
+        }
+
+        .thought-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .thought-card.active:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .thought-card, .thought-card.active:hover {
+                transform: none;
+                transition: none;
+            }
+        }
+
+        .thought-num {
+            font-family: var(--font-serif);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .thought-eng {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .thought-hin {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 300;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 8px;
+        }
+
+        /* Artist Bio Section */
+        .artist-img-container {
+            position: relative;
+            margin-bottom: 32px;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .artist-img-placeholder {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            background: linear-gradient(135deg, #f5f5f5, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: #dcdcdc;
+        }
+
+        .badge-experience {
+            position: absolute;
+            bottom: 20px;
+            right: 0;
+            background: #ffffff;
+            padding: 16px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            border-left: 4px solid var(--text-dark);
+        }
+
+        .badge-num {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .badge-txt {
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .artist-bio {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-weight: 300;
+            padding: 0 10px;
+        }
+
+        .artist-signature {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-style: italic;
+            margin-top: 32px;
+            margin-bottom: 4px;
+        }
+
+        .artist-title {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        /* Counters/Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Gallery Filter System */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .filter-pill {
+            position: relative;
+            isolation: isolate;
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .filter-pill.active {
+            color: #ffffff;
+            border-color: var(--text-dark);
+        }
+
+        .filter-pill::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            border-radius: inherit;
+            background: var(--text-dark);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .filter-pill.active::before {
+            opacity: 1;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .gallery-img-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .gallery-img-container:hover .gallery-img {
+            transform: scale(1.03);
+            will-change: transform;
+        }
+
+        /* Creative Process Steps */
+        .process-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .process-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .process-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .process-icon {
+            font-size: 18px;
+            color: var(--text-muted);
+            background: #f7f7f7;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .process-num {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .process-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .process-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* Quote Callout */
+        .quote-section {
+            text-align: center;
+            padding: 60px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin: 40px 0;
+        }
+
+        .quote-text {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Contact Form */
+        .form-group {
+            margin-bottom: 32px;
+        }
+
+        .form-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background: transparent;
+            padding: 12px 0;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--text-dark);
+            outline: none;
+            text-align: center;
+        }
+
+        .form-input::placeholder {
+            color: #b3b3b3;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input:focus {
+            border-bottom-color: var(--text-dark);
+        }
+
+        select.form-input {
+            appearance: none;
+            text-align-last: center;
+        }
+
+        /* Direct Contact Details Block */
+        .direct-contact {
+            margin-top: 48px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .contact-icon {
+            font-size: 14px;
+            color: var(--text-dark);
+            width: 32px;
+            height: 32px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .contact-value {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 32px 0;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2ec4b6;
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 16px 0 24px 0;
+            font-weight: 300;
+        }
+
+        .footer-author {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .footer-links-title {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+        }
+
+        .footer-credit {
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding-top: 84px;
+            }
+
+            header {
+                position: fixed;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 84px;
+                margin: 0;
+                border-radius: 0;
+                padding: 24px;
+            }
+
+            .hero-blob-pink { left: -140px; }
+            .hero-blob-yellow { right: -140px; }
+            .hero-blob-blue { right: -100px; }
+            .hero-float-card:nth-child(4) { left: -55px; }
+            .hero-float-card:nth-child(5) { right: -30px; }
+            .hero-float-card:nth-child(6) { left: -90px; }
+            .hero-float-card:nth-child(7) { right: -55px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                will-change: auto !important;
+            }
+
+            .motion-ready .reveal-item:not(.active) {
+                opacity: 1;
+                transform: none;
+            }
+
+            .btn:hover, .btn:active, .thought-card.active:hover,
+            .portfolio-img-container:hover .portfolio-img,
+            .gallery-img-container:hover .gallery-img {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+    <div class="container">
+        <header>
+            <div class="logo">Artzenix</div>
+            <div class="menu-icon"><i class="fa-solid fa-bars"></i></div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-atmosphere" aria-hidden="true">
+                <span class="hero-blob hero-blob-pink"></span>
+                <span class="hero-blob hero-blob-yellow"></span>
+                <span class="hero-blob hero-blob-blue"></span>
+                <span class="hero-float-card"></span>
+                <span class="hero-float-card"></span>
+                <span class="hero-float-card"></span>
+                <span class="hero-float-card"></span>
+                <span class="hero-float-card"></span>
+            </div>
+            <div class="hero-tag intro-text">Contemporary Artist</div>
+            <h1 class="hero-title intro-text delay-1">Artzenix</h1>
+            <p class="hero-desc intro-text delay-2">Exploring the boundaries of color, form, and emotion through visceral contemporary paintings.</p>
+            
+            <div class="cta-buttons intro-text delay-3">
+                <a href="#gallery" class="btn btn-dark">Explore Gallery</a>
+                <a href="#contact" class="btn btn-outline">Commission Art</a>
+            </div>
+
+            <div class="scroll-indicator intro-text delay-3">
+                <span>Scroll</span>
+                <i class="fa-solid fa-arrow-down-long"></i>
+            </div>
+        </section>
+
+        <section class="section" id="Father of the Indian Constitution">
+            <span class="section-tag reveal-item">Father of the Indian Constitution</span>
+            <h2 class="section-title reveal-item" style="margin-bottom: 24px;">Dr. Bhimrao Ramji Ambedkar</h2>
+            
+            <div class="portfolio-item reveal-item">
+                <div class="portfolio-img-container" style="aspect-ratio: 3/4; max-width: 480px; margin: 0 auto 24px auto;">
+                    <img src="assets/dr-bhimrao-ambedkar-painting.png" alt="Dr. Bhimrao Ramji Ambedkar Painting" class="portfolio-img" style="object-fit: cover; width: 100%; height: 100%;">
+                </div>
+            </div>
+
+            <h2 class="section-title thought-reveal" style="font-size: 26px; margin-top: 40px; margin-bottom: 20px; letter-spacing: 2px;">Words of Dr. B.R. Ambedkar</h2>
+
+            <div class="thoughts-container">
+                <div class="thought-card">
+                    <span class="thought-num">01</span>
+                    <p class="thought-eng">Life should be great rather than long.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> जीवन लंबा होने से अधिक महत्वपूर्ण है कि वह महान और उद्देश्यपूर्ण हो.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">02</span>
+                    <p class="thought-eng">Educate, Agitate, Organize.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> शिक्षा प्राप्त करो, अपने अधिकारों के लिए जागरूक बनो और संगठित रहो.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">03</span>
+                    <p class="thought-eng">Cultivation of mind should be the ultimate aim of human existence.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> मन और बुद्धि का विकास ही जीवन का सबसे बड़ा लक्ष्य होना चाहिए.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">04</span>
+                    <p class="thought-eng">Freedom of mind is the real freedom.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> विचारों और सोच की स्वतंत्रता ही सच्ची स्वतंत्रता है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">05</span>
+                    <p class="thought-eng">I measure the progress of a community by the degree of progress which women have achieved.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> किसी समाज की प्रगति महिलाओं की प्रगति से मापी जाती.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">06</span>
+                    <p class="thought-eng">Knowledge is the basis of human life.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> ज्ञान मानव जीवन की नींव है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">07</span>
+                    <p class="thought-eng">Religion is for man and not man for religion.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> धर्म मनुष्य के कल्याण के लिए है, मनुष्य धर्म के लिए नहीं.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">08</span>
+                    <p class="thought-eng">Be educated, be organized and be agitated.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> शिक्षित बनो, संगठित रहो और अन्याय के विरुद्ध आवाज उठाओ.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">09</span>
+                    <p class="thought-eng">If you believe in living a respectable life, you believe in self-help.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> सम्मानजनक जीवन के लिए आत्मनिर्भर होना जरूरी है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">10</span>
+                    <p class="thought-eng">We must stand on our own feet and fight as best as we can for our rights.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> अपने अधिकारों के लिए स्वयं खड़े होकर संघर्ष करना चाहिए.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">11</span>
+                    <p class="thought-eng">Constitution is not a mere lawyer's document, it is a vehicle of life.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> संविधान केवल कानूनी दस्तावेज नहीं, बल्कि लोगों के जीवन का मार्गदर्शक है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">12</span>
+                    <p class="thought-eng">Men are mortal. So are ideas.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> जैसे मनुष्य नश्वर है, वैसे ही विचार भी प्रचार के बिना समाप्त हो सकते हैं.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">13</span>
+                    <p class="thought-eng">Political democracy cannot last unless there lies at the base of it social democracy.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> सामाजिक समानता और न्याय के बिना लोकतंत्र टिक नहीं सकता.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">14</span>
+                    <p class="thought-eng">A great man is different from an eminent one in that he is ready to be the servant of society.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> महान व्यक्ति वह है जो समाज की सेवा के लिए सदैव तैयार रहता है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">15</span>
+                    <p class="thought-eng">History shows that where ethics and economics come in conflict, victory is always with economics.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> नैतिकता और आर्थिक हितों के टकराव में अक्सर आर्थिक हित जीतते हैं.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">16</span>
+                    <p class="thought-eng">Indifferentism is the worst kind of disease that can affect people.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> उदासीनता समाज के लिए सबसे खतरनाक बीमारी है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">17</span>
+                    <p class="thought-eng">Equality may be a fiction but one must accept it as a governing principle.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> समानता पूरी तरह प्राप्त न हो सके, फिर भी इसे जीवन का मूल सिद्धांत मानना चाहिए.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">18</span>
+                    <p class="thought-eng">A safe army is better than a safe border.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> देश की सुरक्षा के लिए मजबूत सेना आवश्यक है.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">19</span>
+                    <p class="thought-eng">Law and order are the medicine of the body politic.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> कानून और व्यवस्था समाज को स्वस्थ बनाए रखते हैं.</p>
+                </div>
+
+                <div class="thought-card">
+                    <span class="thought-num">20</span>
+                    <p class="thought-eng">Life loses half its interest if there is no struggle.</p>
+                    <p class="thought-hin"><strong>अर्थ:</strong> संघर्ष के बिना जीवन का महत्व और रोमांच कम हो जाता.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <span class="section-tag reveal-item">Portfolio</span>
+            <h2 class="section-title reveal-item">Selected Works</h2>
+
+            <div class="portfolio-item reveal-item">
+                <div class="portfolio-img-container">
+                    <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600" alt="Ethereal Dreams" class="portfolio-img">
+                </div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-name">Ethereal Dreams</h3>
+                    <div class="portfolio-meta">Oil on Canvas</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item reveal-item">
+                <div class="portfolio-img-container">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600" alt="Urban Solitude" class="portfolio-img">
+                </div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-name">Urban Solitude</h3>
+                    <div class="portfolio-meta">Acrylic on Canvas</div>
+                </div>
+            </div>
+
+            <div class="portfolio-item reveal-item">
+                <div class="portfolio-img-container">
+                    <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600" alt="Golden Hour" class="portfolio-img">
+                </div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-name">Golden Hour</h3>
+                    <div class="portfolio-meta">Mixed Media</div>
+                </div>
+            </div>
+
+            <a href="#gallery" class="view-all-link reveal-item">View All Works <i class="fa-solid fa-arrow-right"></i></a>
+        </section>
+
+        <section class="section">
+            <div class="artist-img-container reveal-item">
+                <div class="artist-img-placeholder">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <div class="badge-experience">
+                    <div class="badge-num">3+</div>
+                    <div class="badge-txt">Years of Art</div>
+                </div>
+            </div>
+
+            <span class="section-tag reveal-item">The Artist</span>
+            <h2 class="section-title reveal-item" style="margin-bottom: 24px;">Sahil Meshram</h2>
+
+            <p class="artist-bio reveal-item">Born with an innate passion for colors and forms, I have dedicated my life to exploring the depths of human emotion through contemporary art. Each brushstroke tells a story, each canvas holds a piece of my soul.</p>
+            <p class="artist-bio reveal-item">My work draws inspiration from the interplay of light and shadow, the chaos of urban landscapes, and the serenity of nature. I believe art should evoke feeling, provoke thought, and create a dialogue between the viewer and the canvas.</p>
+            <p class="artist-bio reveal-item">Based in India, I have exhibited my work in galleries across the country and internationally, connecting with collectors who share my vision of art as a transformative experience.</p>
+
+            <div class="artist-signature reveal-item">Sahil Meshram</div>
+            <div class="artist-title reveal-item">Founder, Artium Studio</div>
+
+            <div class="stats-grid reveal-item">
+                <div class="stat-item">
+                    <div class="stat-num">25+</div>
+                    <div class="stat-label">Artworks Created</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">5+</div>
+                    <div class="stat-label">Exhibitions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">30+</div>
+                    <div class="stat-label">Happy Collectors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">3+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="gallery">
+            <span class="section-tag reveal-item">Collection</span>
+            <h2 class="section-title reveal-item">Art Gallery</h2>
+
+            <div class="gallery-filters reveal-item">
+                <button class="filter-pill active">All</button>
+                <button class="filter-pill">Abstract</button>
+                <button class="filter-pill">Contemporary</button>
+                <button class="filter-pill">Landscape</button>
+                <button class="filter-pill">Portrait</button>
+                <button class="filter-pill">Minimalist</button>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-img-container reveal-item">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600" class="gallery-img" alt="Gallery item">
+                </div>
+                <div class="gallery-img-container reveal-item">
+                    <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600" class="gallery-img" alt="Gallery item">
+                </div>
+                <div class="gallery-img-container reveal-item">
+                    <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600" class="gallery-img" alt="Gallery item">
+                </div>
+                <div class="gallery-img-container reveal-item">
+                    <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=600" class="gallery-img" alt="Gallery item">
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <span class="section-tag reveal-item">How I Work</span>
+            <h2 class="section-title reveal-item">Creative Process</h2>
+
+            <div class="process-list">
+                <div class="process-card reveal-item">
+                    <div class="process-header">
+                        <div class="process-icon"><i class="fa-regular fa-lightbulb"></i></div>
+                        <div class="process-num">01</div>
+                    </div>
+                    <h3 class="process-name">Concept</h3>
+                    <p class="process-desc">Every masterpiece begins with an idea. I draw inspiration from emotions, nature, and the world around us to conceptualize unique artistic visions.</p>
+                </div>
+
+                <div class="process-card reveal-item">
+                    <div class="process-header">
+                        <div class="process-icon"><i class="fa-solid fa-palette"></i></div>
+                        <div class="process-num">02</div>
+                    </div>
+                    <h3 class="process-name">Color Study</h3>
+                    <p class="process-desc">Colors speak louder than words. I carefully select palettes that evoke the intended emotions and create visual harmony.</p>
+                </div>
+
+                <div class="process-card reveal-item">
+                    <div class="process-header">
+                        <div class="process-icon"><i class="fa-solid fa-paintbrush"></i></div>
+                        <div class="process-num">03</div>
+                    </div>
+                    <h3 class="process-name">Creation</h3>
+                    <p class="process-desc">With brush in hand, I bring the vision to life. Each stroke is deliberate, each layer adds depth to the narrative.</p>
+                </div>
+
+                <div class="process-card reveal-item">
+                    <div class="process-header">
+                        <div class="process-icon"><i class="fa-solid fa-border-all"></i></div>
+                        <div class="process-num">04</div>
+                    </div>
+                    <h3 class="process-name">Presentation</h3>
+                    <p class="process-desc">The final piece is carefully finished and presented, ready to find its place in your space and heart.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="quote-section thought-reveal">
+            <p class="quote-text">"Art is not what you see, but what you make others see."</p>
+            <p class="quote-author">— Edgar Degas</p>
+        </div>
+
+        <section class="section" id="contact">
+            <span class="section-tag reveal-item">Get In Touch</span>
+            <h2 class="section-title reveal-item" style="margin-bottom: 12px;">Commission Art</h2>
+            <p class="reveal-item" style="color: var(--text-muted); font-size: 14px; margin-bottom: 40px; font-weight: 300;">Interested in a custom piece? Let's create something extraordinary together.</p>
+
+            <form onsubmit="event.preventDefault();" class="reveal-item">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <select class="form-input" required>
+                        <option value="" disabled selected style="color: #b3b3b3;">Inquiry Type</option>
+                        <option value="commission">Custom Commission Painting</option>
+                        <option value="buy">Purchase Existing Artwork</option>
+                        <option value="exhibition">Exhibition / Collaboration</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Your Message" required>
+                </div>
+
+                <button type="submit" class="btn btn-dark" style="width: 100%; margin-bottom: 40px;">Send Message</button>
+            </form>
+
+            <div class="direct-contact reveal-item">
+                <h3 class="contact-title">Direct Contact</h3>
+                
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="contact-details">
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:hello@artiumstudio.com" class="contact-value">hello@artiumstudio.com</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="contact-details">
+                        <span class="contact-label">Phone</span>
+                        <a href="tel:+919876543210" class="contact-value">+91 98765 43210</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                    <div class="contact-details">
+                        <span class="contact-label">Studio</span>
+                        <span class="contact-value">Nagpur, India</span>
+                    </div>
+                </div>
+
+                <div class="social-row">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span>Accepting Commissions for 2026</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="reveal-item">
+            <div class="logo">Artium Studio</div>
+            <p class="footer-desc">Contemporary art that speaks to the soul. Each piece is a journey through color, emotion, and the human experience.</p>
+            <div class="footer-author">By Sahil Meshram</div>
+
+            <h4 class="footer-links-title">Explore</h4>
+            <ul class="footer-links">
+                <li><a href="#">Selected Works</a></li>
+                <li><a href="#gallery">Art Gallery</a></li>
+                <li><a href="#">The Artist</a></li>
+                <li><a href="#">Creative Process</a></li>
+            </ul>
+
+            <h4 class="footer-links-title">Connect</h4>
+            <div class="social-row" style="margin-top: 12px; margin-bottom: 40px;">
+                <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="copyright">
+                &copy; 2026 ARTIUM STUDIO. All rights reserved.
+            </div>
+            <p class="footer-credit">Created by sahilmeshrm0x</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const filterPills = document.querySelectorAll('.filter-pill');
+            filterPills.forEach(pill => {
+                pill.setAttribute('aria-pressed', String(pill.classList.contains('active')));
+                pill.addEventListener('click', function() {
+                    filterPills.forEach(filterPill => {
+                        const isSelected = filterPill === pill;
+                        filterPill.classList.toggle('active', isSelected);
+                        filterPill.setAttribute('aria-pressed', String(isSelected));
+                    });
+                });
+            });
+
+            const revealItems = document.querySelectorAll(
+                'section, h1, h2, h3, h4, img, .portfolio-item, .thought-card, ' +
+                '.process-card, .stat-item, .badge-experience, .artist-img-placeholder, ' +
+                '.reveal-item, .thought-reveal, .intro-text'
+            );
+            const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+            revealItems.forEach(item => item.classList.add('reveal-item'));
+
+            if (!('IntersectionObserver' in window) || motionPreference.matches) {
+                revealItems.forEach(item => item.classList.add('active'));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries, currentObserver) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        currentObserver.unobserve(entry.target);
+                    }
+                });
+            }, { root: null, rootMargin: '0px', threshold: 0 });
+
+            document.documentElement.classList.add('motion-ready');
+            revealItems.forEach(item => observer.observe(item));
+
+            document.addEventListener('focusin', function(event) {
+                let focusedElement = event.target;
+                while (focusedElement && focusedElement !== document.documentElement) {
+                    if (focusedElement.classList.contains('reveal-item')) {
+                        focusedElement.classList.add('active');
+                        observer.unobserve(focusedElement);
+                    }
+                    focusedElement = focusedElement.parentElement;
+                }
+            });
+
+            motionPreference.addEventListener('change', function(event) {
+                if (event.matches) {
+                    observer.disconnect();
+                    revealItems.forEach(item => item.classList.add('active'));
+                    document.documentElement.classList.remove('motion-ready');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
